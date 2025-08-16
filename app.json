@@ -1,0 +1,152 @@
+{
+  "name": "krossed-dating-app",
+  "description": "A proximity-based dating app that encourages real-world connections over digital communication. Features location-based matching, 72-hour countdown system, and comprehensive safety tools.",
+  "repository": "https://github.com/your-username/krossed-dating-app",
+  "logo": "https://example.com/krossed-logo.png",
+  "keywords": [
+    "dating",
+    "proximity",
+    "social",
+    "react",
+    "express",
+    "postgresql",
+    "typescript",
+    "real-time",
+    "location-based",
+    "safety"
+  ],
+  "website": "https://krossed.app",
+  "success_url": "/",
+  "scripts": {
+    "postdeploy": "npm run db:push"
+  },
+  "env": {
+    "NODE_ENV": {
+      "description": "Environment for the application",
+      "value": "production"
+    },
+    "DATABASE_URL": {
+      "description": "PostgreSQL database connection string",
+      "required": true
+    },
+    "ENCRYPTION_KEY": {
+      "description": "32-byte encryption key for sensitive data (generate with: openssl rand -hex 32)",
+      "required": true
+    },
+    "JWT_SECRET": {
+      "description": "Secret key for JWT token signing (generate with: openssl rand -base64 32)",
+      "required": true
+    },
+    "SESSION_SECRET": {
+      "description": "Secret for session management (generate with: openssl rand -base64 32)",
+      "required": true
+    },
+    "STRIPE_SECRET_KEY": {
+      "description": "Stripe secret key for payment processing (starts with sk_)",
+      "required": false
+    },
+    "VITE_STRIPE_PUBLIC_KEY": {
+      "description": "Stripe publishable key (starts with pk_)",
+      "required": false
+    },
+    "SENDGRID_API_KEY": {
+      "description": "SendGrid API key for email notifications",
+      "required": false
+    },
+    "TWILIO_ACCOUNT_SID": {
+      "description": "Twilio Account SID for SMS notifications",
+      "required": false
+    },
+    "TWILIO_AUTH_TOKEN": {
+      "description": "Twilio Auth Token for SMS notifications",
+      "required": false
+    },
+    "TWILIO_PHONE_NUMBER": {
+      "description": "Twilio phone number for SMS notifications",
+      "required": false
+    },
+    "REPLIT_DOMAINS": {
+      "description": "Comma-separated list of allowed domains for CORS",
+      "value": "localhost:5000,krossed.replit.app"
+    },
+    "ISSUER_URL": {
+      "description": "OpenID Connect issuer URL for authentication",
+      "value": "https://replit.com/oidc"
+    },
+    "REPL_ID": {
+      "description": "Replit application ID for OpenID Connect",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "hobby"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:mini",
+      "as": "DATABASE"
+    },
+    {
+      "plan": "heroku-redis:mini",
+      "as": "REDIS"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "stack": "heroku-22",
+  "environments": {
+    "review": {
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini",
+          "as": "DATABASE"
+        }
+      ],
+      "env": {
+        "NODE_ENV": "staging"
+      }
+    },
+    "staging": {
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini",
+          "as": "DATABASE"
+        }
+      ],
+      "scripts": {
+        "postdeploy": "npm run db:push"
+      }
+    }
+  },
+  "image": "heroku/nodejs",
+  "mount_dir": ".",
+  "build": {
+    "languages": ["nodejs"],
+    "packages": {
+      "nodejs": "20.x"
+    }
+  },
+  "features": [
+    "http-session-affinity"
+  ],
+  "healthcheck": {
+    "path": "/api/health",
+    "timeout": 30,
+    "interval": 60,
+    "retries": 3
+  },
+  "deployment": {
+    "method": "github",
+    "automatic": {
+      "github": {
+        "branch": "main"
+      }
+    }
+  }
+}
